@@ -57,19 +57,21 @@
 
     async function fetchISS() {
       try {
-        const res = await fetch("http://api.open-notify.org/iss-now.json");
+        // Secure ISS API
+        const res = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
         const data = await res.json();
-        const { latitude, longitude } = data.iss_position;
+        const latitude = data.latitude.toFixed(2);
+        const longitude = data.longitude.toFixed(2);
 
-        // Fake NFL data (yards)
-        const nflPlayer1Yards = Math.floor(Math.random() * 300); // random 0–300
+        // Fake NFL yards (randomized)
+        const nflPlayer1Yards = Math.floor(Math.random() * 300);
         const nflPlayer2Yards = Math.floor(Math.random() * 300);
 
-        // Simple scoring rules
+        // Scoring rules
         score1 = nflPlayer1Yards * 0.1;
         score2 = nflPlayer2Yards * 0.1;
 
-        // Bonus if ISS is over the Western Hemisphere
+        // Bonus points depending on ISS longitude
         if (longitude < 0) {
           score1 += 10;
         } else {
@@ -94,3 +96,4 @@
   </script>
 </body>
 </html>
+
